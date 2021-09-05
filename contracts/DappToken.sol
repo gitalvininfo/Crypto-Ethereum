@@ -10,7 +10,7 @@ contract DappToken {
 
     mapping(address => uint256) public balanceOf;
 
-    mapping(address => mapping(address => uint256)) public balanceOf;
+    mapping(address => mapping(address => uint256)) public allowance;
     // allowance
 
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
@@ -41,10 +41,32 @@ contract DappToken {
     // approve
     // if im account A, i want to approve account B -> spender
     function approve(address _spender, uint256 _value) public returns (bool success) {
+        // look for mapping first address is the owner, second is the spender he authorized
+        allowance[msg.sender][_spender] = _value;
         Approval(msg.sender, _spender, _value);
         return true;
     } 
+
     // transferFrom
+
+    function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {
+        // require _from has enough tokens
+        // require allowance is big enough
+        // change the balance
+        // update the allowance
+        // Transfer event
+        // return a boolean
+        require (_value <= balanceOf[_from]);
+        require (_value <= allowance[_from][msg.sender]);
+
+        balanceOf[_from] -= _value;
+        balanceOf[_to] += _value;
+
+        allowance[_from][msg.sender] -= value;
+
+        Transfer(_from, _to, _value);
+        return true;
+    }
     // 
     // 2:10
 }
