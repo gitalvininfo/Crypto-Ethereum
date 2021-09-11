@@ -7,7 +7,7 @@ contract DappTokenSale {
     address admin;
     DappToken public tokenContract;
     uint public tokenPrice;
-    uint public tokenSold;
+    uint public tokensSold;
 
     event Sell(
         address _buyer, uint _amount
@@ -45,7 +45,19 @@ contract DappTokenSale {
             // this is the actual buy functionality
             require(tokenContract.transfer(msg.sender, _numberOfTokens));
 
-            tokenSold += _numberOfTokens;
+            tokensSold += _numberOfTokens;
             emit Sell(msg.sender, _numberOfTokens);
+    }
+
+    // ending token sale
+
+    function endSale() public {
+        // require admin
+        // transfer remaining dapp tokens to admin
+        // destroy contract
+
+        require(msg.sender == admin);
+        require(tokenContract.transfer(admin, tokenContract.balanceOf(this)));
+        selfdestruct(admin);
     }
 }
