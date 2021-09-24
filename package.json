@@ -23,5 +23,8 @@
   "homepage": "https://github.com/gitalvininfo/Crypto-Ethereum#readme",
   "devDependencies": {
     "lite-server": "^2.3.0"
+  },
+  "dependencies": {
+    "@truffle/hdwallet-provider": "^1.5.0"
   }
 }
